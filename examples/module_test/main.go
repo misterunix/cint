@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/bjones/cint"
+	"github.com/misterunix/cint"
 )
 
 func main() {
