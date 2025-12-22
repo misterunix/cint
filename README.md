@@ -2,6 +2,10 @@
 
 A C interpreter written in Go that follows the K&R (Kernighan & Ritchie) C standard. This interpreter can be used as a Go module to execute C code dynamically with support for single-stepping execution.
 
+## Notes
+
+This has not been fully tested.
+
 ## Features
 
 - **K&R C Standard Compliance**: Implements core features of the original C language
