@@ -2,6 +2,7 @@ package cint
 
 import (
 	"fmt"
+	"math"
 	"time"
 )
 
@@ -721,6 +722,215 @@ func (i *Interpreter) registerBuiltins() {
 
 		fmt.Printf("%c", byte(val.Int))
 		return &Value{Type: "int", Int: val.Int}, nil
+	}
+
+	// Floating point math functions
+
+	// sqrt - square root
+	i.builtins["sqrt"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("sqrt requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Sqrt(f)}, nil
+	}
+
+	// pow - power (x^y)
+	i.builtins["pow"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) < 2 {
+			return nil, fmt.Errorf("pow requires 2 arguments")
+		}
+		base, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		exp, err := i.evalExpression(args[1], env)
+		if err != nil {
+			return nil, err
+		}
+		var baseF, expF float64
+		if base.Type == "float" {
+			baseF = base.Float
+		} else {
+			baseF = float64(base.Int)
+		}
+		if exp.Type == "float" {
+			expF = exp.Float
+		} else {
+			expF = float64(exp.Int)
+		}
+		return &Value{Type: "float", Float: math.Pow(baseF, expF)}, nil
+	}
+
+	// sin - sine
+	i.builtins["sin"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("sin requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Sin(f)}, nil
+	}
+
+	// cos - cosine
+	i.builtins["cos"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("cos requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Cos(f)}, nil
+	}
+
+	// tan - tangent
+	i.builtins["tan"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("tan requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Tan(f)}, nil
+	}
+
+	// abs - absolute value
+	i.builtins["abs"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("abs requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		if val.Type == "float" {
+			return &Value{Type: "float", Float: math.Abs(val.Float)}, nil
+		}
+		if val.Int < 0 {
+			return &Value{Type: "int", Int: -val.Int}, nil
+		}
+		return &Value{Type: "int", Int: val.Int}, nil
+	}
+
+	// floor - round down
+	i.builtins["floor"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("floor requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Floor(f)}, nil
+	}
+
+	// ceil - round up
+	i.builtins["ceil"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("ceil requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Ceil(f)}, nil
+	}
+
+	// log - natural logarithm
+	i.builtins["log"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("log requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Log(f)}, nil
+	}
+
+	// log10 - logarithm base 10
+	i.builtins["log10"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("log10 requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Log10(f)}, nil
+	}
+
+	// exp - exponential (e^x)
+	i.builtins["exp"] = func(args []Expression, env *Environment) (*Value, error) {
+		if len(args) == 0 {
+			return nil, fmt.Errorf("exp requires 1 argument")
+		}
+		val, err := i.evalExpression(args[0], env)
+		if err != nil {
+			return nil, err
+		}
+		var f float64
+		if val.Type == "float" {
+			f = val.Float
+		} else {
+			f = float64(val.Int)
+		}
+		return &Value{Type: "float", Float: math.Exp(f)}, nil
 	}
 }
 
