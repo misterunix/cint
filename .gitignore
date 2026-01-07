@@ -1,0 +1,10 @@
+examples/basic/basic
+examples/debugger/debugger
+examples/math_functions/math_functions
+examples/module_test/module_test
+examples/simple/simple
+examples/test_factorial/test_factorial
+examples/test_suite/test_suite
+examples/test_vardecl/test_vardecl
+
+!*.md 
