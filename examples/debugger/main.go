@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/bjones/cint"
+	"github.com/misterunix/cint"
 )
 
 func main() {
