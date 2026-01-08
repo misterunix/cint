@@ -3,7 +3,7 @@
 ## ✅ All Requirements Met
 
 ### 1. C Interpreter in Go ✅
-- **Location**: `/home/bjones/go/src/cint/`
+- **Location**: `/home/misterunix/go/src/cint/`
 - **Language**: Go programming language
 - **Implementation**: Complete tree-walking interpreter
 
@@ -34,11 +34,11 @@
   - Error reporting per step
 
 ### 5. Module Architecture ✅
-- **Module Name**: `github.com/bjones/cint`
+- **Module Name**: `github.com/misterunix/cint`
 - **Public API**: `cint.go`
 - **Usage Example**:
 ```go
-import "github.com/bjones/cint"
+import "github.com/misterunix/cint"
 
 interp, err := cint.New(sourceCode)
 interp.EnableSingleStep()
@@ -85,7 +85,7 @@ err = interp.Run()
 ## Build & Run
 
 ```bash
-cd /home/bjones/go/src/cint
+cd /home/misterunix/go/src/cint
 go build ./...                          # Build all packages
 go run examples/module_test/main.go     # Run module test
 go run examples/test_suite/main.go      # Run test suite
@@ -97,7 +97,7 @@ go run examples/debugger/main.go        # Interactive debugger
 
 ### 1. Module Usage ✅
 ```go
-import "github.com/bjones/cint"
+import "github.com/misterunix/cint"
 interp, _ := cint.New(source)
 interp.Run()
 ```

@@ -2,7 +2,7 @@
 
 ## Installation & Import
 ```go
-import "github.com/bjones/cint"
+import "github.com/misterunix/cint"
 ```
 
 ## Basic Usage
@@ -198,7 +198,7 @@ for {
 - `token.go` - Token definitions
 
 ## Examples Location
-`/home/bjones/go/src/cint/examples/`
+`/home/misterunix/go/src/cint/examples/`
 - basic/
 - debugger/
 - module_test/
@@ -206,7 +206,7 @@ for {
 
 ## Build & Test
 ```bash
-cd /home/bjones/go/src/cint
+cd /home/misterunix/go/src/cint
 go build ./...
 go run examples/module_test/main.go
 ```

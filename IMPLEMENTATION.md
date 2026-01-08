@@ -6,7 +6,7 @@ A complete C interpreter written in Go that follows the K&R C standard. The inte
 ## Project Structure
 
 ```
-/home/bjones/go/src/cint/
+/home/misterunix/go/src/cint/
 ├── go.mod                      # Go module definition
 ├── README.md                   # Comprehensive documentation
 ├── cint.go                     # Public API interface
@@ -135,7 +135,7 @@ All examples run successfully:
 
 To use in another Go project:
 ```go
-import "github.com/bjones/cint"
+import "github.com/misterunix/cint"
 
 func main() {
     source := `int main() { return 42; }`
@@ -161,7 +161,7 @@ As documented in README.md:
 ## Build & Test
 
 ```bash
-cd /home/bjones/go/src/cint
+cd /home/misterunix/go/src/cint
 go build ./...              # Build all packages
 go run examples/basic/main.go      # Run examples
 go run examples/debugger/main.go   # Interactive debugger

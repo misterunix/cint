@@ -19,7 +19,7 @@ This has not been fully tested.
 ## Installation
 
 ```bash
-go get github.com/bjones/cint
+go get github.com/misterunix/cint
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ package main
 
 import (
     "fmt"
-    "github.com/bjones/cint"
+    "github.com/misterunix/cint"
 )
 
 func main() {
