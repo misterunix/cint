@@ -99,6 +99,9 @@ const (
 	COLON     // :
 )
 
+// keywords is a map that associates C language keyword strings with their corresponding TokenType values.
+// This map is used by the lexer to quickly identify reserved words in C source code and assign them the correct token type.
+// The keys are C keywords (e.g., "int", "return", "if"), and the values are constants representing their token types.
 var keywords = map[string]TokenType{
 	"auto":     AUTO,
 	"break":    BREAK,
@@ -134,7 +137,8 @@ var keywords = map[string]TokenType{
 	"while":    WHILE,
 }
 
-// Token represents a lexical token
+
+// Token represents a lexical token with its type, literal value, and position (line and column) in the source code.
 type Token struct {
 	Type    TokenType
 	Literal string
@@ -142,7 +146,10 @@ type Token struct {
 	Column  int
 }
 
-// LookupIdent returns the token type for an identifier
+
+// LookupIdent checks if the provided identifier is a reserved keyword.
+// If the identifier matches a keyword, it returns the corresponding TokenType.
+// Otherwise, it returns IDENT to indicate a user-defined identifier.
 func LookupIdent(ident string) TokenType {
 	if tok, ok := keywords[ident]; ok {
 		return tok

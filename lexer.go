@@ -4,7 +4,10 @@ import (
 	"unicode"
 )
 
-// Lexer tokenizes C source code
+
+// Lexer represents a lexical analyzer for tokenizing input strings.
+// It maintains the input string, current position, reading position,
+// current character, and tracking information for the current line and column.
 type Lexer struct {
 	input        string
 	position     int  // current position in input
@@ -14,13 +17,18 @@ type Lexer struct {
 	column       int
 }
 
-// NewLexer creates a new lexer
+
+// NewLexer creates and initializes a new Lexer instance for the given input string.
+// It sets the starting line and column, reads the first character, and returns a pointer to the Lexer.
 func NewLexer(input string) *Lexer {
 	l := &Lexer{input: input, line: 1, column: 0}
 	l.readChar()
 	return l
 }
 
+// readChar advances the lexer by one character, updating the current character (l.ch),
+// position, readPosition, line, and column counters. If the end of input is reached,
+// l.ch is set to 0. Handles line and column tracking for newline characters.
 func (l *Lexer) readChar() {
 	if l.readPosition >= len(l.input) {
 		l.ch = 0
@@ -36,6 +44,8 @@ func (l *Lexer) readChar() {
 	}
 }
 
+// peekChar returns the next character in the input without advancing the lexer position.
+// If the end of the input is reached, it returns 0.
 func (l *Lexer) peekChar() byte {
 	if l.readPosition >= len(l.input) {
 		return 0
@@ -43,7 +53,12 @@ func (l *Lexer) peekChar() byte {
 	return l.input[l.readPosition]
 }
 
-// NextToken returns the next token
+
+// NextToken scans the input and returns the next Token from the input stream.
+// It skips whitespace and comments, then determines the type of token based on the current character.
+// The function handles single and multi-character operators, delimiters, string and character literals,
+// identifiers, numbers, and special tokens such as EOF and ILLEGAL. The returned Token includes
+// the token type, literal value, and the line and column where the token was found.
 func (l *Lexer) NextToken() Token {
 	var tok Token
 
@@ -240,12 +255,17 @@ func (l *Lexer) NextToken() Token {
 	return tok
 }
 
+// skipWhitespace advances the lexer position past any whitespace characters,
+// including spaces, tabs, newlines, and carriage returns.
 func (l *Lexer) skipWhitespace() {
 	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
 		l.readChar()
 	}
 }
 
+// skipComments skips over single-line (//) and multi-line (/* ... */) comments in the input.
+// It advances the lexer position past any comments and any subsequent whitespace.
+// For multi-line comments, it also handles consecutive comments by recursively calling itself.
 func (l *Lexer) skipComments() {
 	if l.ch == '/' {
 		if l.peekChar() == '/' {
@@ -275,6 +295,9 @@ func (l *Lexer) skipComments() {
 	}
 }
 
+// readIdentifier reads an identifier from the current position in the input.
+// It advances the lexer until a non-letter and non-digit character is encountered,
+// then returns the substring representing the identifier.
 func (l *Lexer) readIdentifier() string {
 	position := l.position
 	for isLetter(l.ch) || isDigit(l.ch) {
@@ -283,6 +306,10 @@ func (l *Lexer) readIdentifier() string {
 	return l.input[position:l.position]
 }
 
+// readNumber reads a numeric literal from the input and determines its type.
+// It supports integer, floating-point, and scientific notation formats, as well as
+// optional suffixes such as L, U, and F (case-insensitive) commonly used in C-like languages.
+// The function returns the string representation of the number and its corresponding TokenType.
 func (l *Lexer) readNumber() (string, TokenType) {
 	position := l.position
 	tokType := INT
@@ -321,6 +348,10 @@ func (l *Lexer) readNumber() (string, TokenType) {
 	return l.input[position:l.position], tokType
 }
 
+// readString reads a string literal from the input, handling escape sequences.
+// It assumes the opening quote has already been encountered and advances until
+// it finds the closing quote or the end of input. The function returns the
+// string content without the surrounding quotes.
 func (l *Lexer) readString() string {
 	position := l.position + 1
 	for {
@@ -335,6 +366,9 @@ func (l *Lexer) readString() string {
 	return l.input[position:l.position]
 }
 
+// readCharLiteral reads a character literal from the input, handling escape sequences.
+// It assumes the current position is at the opening single quote and reads until the closing single quote or end of input.
+// Returns the string representing the character literal (excluding the surrounding single quotes).
 func (l *Lexer) readCharLiteral() string {
 	position := l.position + 1
 	for {
@@ -349,10 +383,13 @@ func (l *Lexer) readCharLiteral() string {
 	return l.input[position:l.position]
 }
 
+// isLetter checks if the given byte represents a Unicode letter or an underscore ('_').
+// It returns true if the character is a letter or underscore, and false otherwise.
 func isLetter(ch byte) bool {
 	return unicode.IsLetter(rune(ch)) || ch == '_'
 }
 
+// isDigit returns true if the given byte represents an ASCII digit ('0' to '9'), and false otherwise.
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }

@@ -1,11 +1,15 @@
 package cint
 
-// Cint provides the main interface to the C interpreter
+// Cint represents a wrapper around an Interpreter instance, providing methods and state
+// for interacting with the interpreter in the context of the cint package.
 type Cint struct {
 	interpreter *Interpreter
 }
 
-// New creates a new C interpreter instance
+// New creates a new instance of Cint by parsing the provided source string.
+// It initializes the lexer, parser, and interpreter for the given source code.
+// If parsing errors are encountered, it returns a ParseError containing the errors.
+// On success, it returns a pointer to the initialized Cint and a nil error.
 func New(source string) (*Cint, error) {
 	lexer := NewLexer(source)
 	parser := NewParser(lexer)
@@ -22,36 +26,46 @@ func New(source string) (*Cint, error) {
 	}, nil
 }
 
-// Run executes the C program
+// Run executes the interpreter associated with the Cint instance.
+// It returns an error if the interpreter fails to run.
 func (c *Cint) Run() error {
 	return c.interpreter.Run()
 }
 
-// EnableSingleStep enables single-stepping mode
+// EnableSingleStep enables single-step execution mode in the underlying interpreter.
+// When single-step mode is enabled, the interpreter executes one instruction at a time,
+// allowing for fine-grained debugging and inspection of program state after each step.
 func (c *Cint) EnableSingleStep() {
 	c.interpreter.EnableSingleStep()
 }
 
-// DisableSingleStep disables single-stepping mode
+// DisableSingleStep disables the single-step execution mode in the underlying interpreter.
+// When single-step mode is disabled, the interpreter will execute code without pausing
+// after each instruction.
 func (c *Cint) DisableSingleStep() {
 	c.interpreter.DisableSingleStep()
 }
 
-// Step executes one statement in single-step mode
+// Step executes the next instruction in the interpreter and returns the result as a StepResult.
+// It delegates the stepping operation to the underlying interpreter.
 func (c *Cint) Step() *StepResult {
 	return c.interpreter.Step()
 }
 
-// Reset resets the interpreter state
+// Reset resets the internal interpreter state of the Cint instance.
+// This method delegates the reset operation to the underlying interpreter.
 func (c *Cint) Reset() {
 	c.interpreter.Reset()
 }
 
-// ParseError represents parsing errors
+// ParseError represents an error that occurred during parsing,
+// containing a slice of error messages describing the issues encountered.
 type ParseError struct {
 	Errors []string
 }
 
+// Error implements the error interface for ParseError by returning a formatted string
+// that lists all parse errors contained in the Errors slice, each on a new line.
 func (e *ParseError) Error() string {
 	msg := "Parse errors:\n"
 	for _, err := range e.Errors {
