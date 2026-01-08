@@ -4,7 +4,7 @@ A C interpreter written in Go that follows the K&R (Kernighan & Ritchie) C stand
 
 ## Notes
 
-This has not been fully tested.
+All K&R test appear to work. If you find a problem, contribute, please!
 
 ## Features
 
